@@ -122,6 +122,7 @@ Depending on the exact appliance configuration not all channels might be support
 | remote_control_can_set_program_active | Switch | Indicates if the active program of the device can be set remotely. | Yes |
 | spinning_speed | String | The spinning speed of the active program. | Yes |
 | program_active | String | The active program of the device. | Yes |
+| dish_warmer_program_active | String | The active program of the device. | No |
 | vacuum_cleaner_program_active | String | The active program of the device. | No |
 | program_phase | String | The phase of the active program. | Yes |
 | operation_state | String | The operation state of the device. | Yes |
@@ -162,7 +163,7 @@ Depending on the exact appliance configuration not all channels might be support
 | plate_power_step | String | The power level of the heating plate. | Yes |
 | door_state | Switch | Indicates if the door of the device is open. | Yes |
 | door_alarm | Switch | Indicates if the door alarm of the device is active. | Yes |
-
+| battery_level | Number | The battery level of the robotic vacuum cleaner. | Yes |
 
 ### Coffee System
 
@@ -188,13 +189,10 @@ Depending on the exact appliance configuration not all channels might be support
 
 | Channel ID | Channel Type ID |
 | ---------- | --------------- |
-| remote_control_can_be_started | remote_control_can_be_started |
-| remote_control_can_be_stopped | remote_control_can_be_stopped |
 | remote_control_can_be_switched_on | remote_control_can_be_switched_on |
 | remote_control_can_be_switched_off | remote_control_can_be_switched_off |
-| program_active | program_active |
+| dish_warmer_program_active | dish_warmer_program_active |
 | operation_state | operation_state |
-| program_start_stop | program_start_stop |
 | power_state_on_off | power_state_on_off |
 | finish_state | finish_state |
 | program_remaining_time | program_remaining_time |
@@ -224,9 +222,9 @@ Depending on the exact appliance configuration not all channels might be support
 | program_remaining_time | program_remaining_time |
 | program_elapsed_time | program_elapsed_time |
 | program_progress | program_progress |
-| temperature_target | temperature_target |
 | error_state | error_state |
 | info_state | info_state |
+| door_state | door_state |
 
 ### Tumble Dryer
 
@@ -251,6 +249,7 @@ Depending on the exact appliance configuration not all channels might be support
 | info_state | info_state |
 | light_switch | light_switch |
 | light_can_be_controlled | light_can_be_controlled |
+| door_state | door_state |
 
 ### Freezer
 
@@ -302,8 +301,6 @@ Depending on the exact appliance configuration not all channels might be support
 
 | Channel ID | Channel Type ID |
 | ---------- | --------------- |
-| remote_control_can_be_started | remote_control_can_be_started |
-| remote_control_can_be_stopped | remote_control_can_be_stopped |
 | operation_state | operation_state |
 | error_state | error_state |
 | info_state | info_state |
@@ -362,6 +359,7 @@ Depending on the exact appliance configuration not all channels might be support
 | info_state | info_state |
 | light_switch | light_switch |
 | light_can_be_controlled | light_can_be_controlled |
+| door_state | door_state |
 
 ### Robotic Vacuum Cleaner
 
@@ -370,8 +368,6 @@ Depending on the exact appliance configuration not all channels might be support
 | remote_control_can_be_started | remote_control_can_be_started |
 | remote_control_can_be_stopped | remote_control_can_be_stopped |
 | remote_control_can_be_paused | remote_control_can_be_paused |
-| remote_control_can_be_switched_on | remote_control_can_be_switched_on |
-| remote_control_can_be_switched_off | remote_control_can_be_switched_off |
 | remote_control_can_set_program_active | remote_control_can_set_program_active |
 | vacuum_cleaner_program_active | vacuum_cleaner_program_active |
 | operation_state | operation_state |
@@ -380,6 +376,7 @@ Depending on the exact appliance configuration not all channels might be support
 | power_state_on_off | power_state_on_off |
 | error_state | error_state |
 | info_state | info_state |
+| battery_level | battery_level |
 
 ### Washer Dryer
 
@@ -406,6 +403,7 @@ Depending on the exact appliance configuration not all channels might be support
 | temperature_target | temperature_target |
 | light_switch | light_switch |
 | light_can_be_controlled | light_can_be_controlled |
+| door_state | door_state |
 
 ### Washing Machine
 
@@ -431,6 +429,7 @@ Depending on the exact appliance configuration not all channels might be support
 | temperature_target | temperature_target |
 | light_switch | light_switch |
 | light_can_be_controlled | light_can_be_controlled |
+| door_state | door_state |
 
 ### Wine Storage
 
