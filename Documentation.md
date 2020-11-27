@@ -1,10 +1,10 @@
 # Miele Cloud Binding
 
+![Miele](doc/miele.png)
+
 This binding integrates [Miele@home](https://www.miele.de/brand/smarthome-42801.htm) appliances via a cloud connection.
 A Miele cloud account and a set of developer credentials is required to use the binding.
 The latter can be requested from the [Miele Developer Portal](https://www.miele.com/f/com/en/register_api.aspx).
-
-![Miele](doc/miele.png)
 
 ## Supported Things
 
@@ -68,22 +68,16 @@ For details on the configuration UI see [Discovery](#discovery) and [Account Con
 The account serves as a bridge for the things representing your appliances.
 On success the configuration assistant will directly configure the account without requiring further actions.
 As an alternative, it provides a things-file template.
-A fully manual configuration that does not require the configuration assistant is work-in-progress.
 
 The account has the following parameters:
 
-| Name        | Type      | Description                                                                                                            | Notes                                |
-| ----------- | --------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| accessToken | mandatory | The OAuth2 access token used to authenticate against the Miele cloud service.                                          | Will be removed in a future version. |
-| locale      | mandatory | The locale to use for full text channels of things from this account. Possible values are `en`, `de`. Default is `en`. | Known issue: The locale is currently not properly handled by the cloud service endpoint used in the binding. All texts match the language of the country the account was registered for. This will be fixed in the future. |
-
-**Please note:** We highly recommend to use automatic thing configuration over things-file based configuration untill the `accessToken` parameter has been removed from the thing configuration.
-The access token is subject to change over time as it needs to be refreshed periodically.
-If you use things-file based configuration and your openHAB instance restarts or the things-file is reloaded after the access token expired then the access token in the thing configuration will probably no longer be valid which will cause problems.
+| Name        | Type      | Description                                                                                                                                                | Notes                                |
+| ----------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| locale      | mandatory | The locale to use for full text channels of things from this account. Possible values are `en`, `de`, `da`, `es`, `fr`, `it`, `nl`, `nb`. Default is `en`. | Prior to the 7th January 2021 `da`, `es`, `fr`, `it`, `nl` and `nb` will default to English. |
 
 Example things-file:
 ```
-Bridge mielecloud:account:home [ accessToken="DE_1234567890abcdefghijklmnopqrstuv", locale="en" ]
+Bridge mielecloud:account:home [ locale="en" ]
 ```
 
 ### Appliance Configuration
@@ -94,7 +88,7 @@ All Miele cloud appliance things have no configuration parameters.
 
 Example things-file:
 ```
-Bridge mielecloud:account:home [ accessToken="DE_1234567890abcdefghijklmnopqrstuv", locale="en" ] {
+Bridge mielecloud:account:home [ locale="en" ] {
     Thing coffee_system 000703261234 "Coffee machine CVA7440" [ ]
     Thing hob 000160102345 "Cooktop KM7677" [ ]
     Thing washing_machine 000148503456 "Washing Machine WWV980" [ ]
@@ -121,11 +115,15 @@ Depending on the exact appliance configuration not all channels might be support
 | remote_control_can_be_switched_off | Switch | Indicates if the device can be switched off remotely. | Yes |
 | remote_control_can_set_program_active | Switch | Indicates if the active program of the device can be set remotely. | Yes |
 | spinning_speed | String | The spinning speed of the active program. | Yes |
+| spinning_speed_raw | Number | The raw spinning speed of the active program. | Yes |
 | program_active | String | The active program of the device. | Yes |
+| program_active_raw | Number | The raw active program of the device. | Yes |
 | dish_warmer_program_active | String | The active program of the device. | No |
 | vacuum_cleaner_program_active | String | The active program of the device. | No |
 | program_phase | String | The phase of the active program. | Yes |
+| program_phase_raw | Number | The raw phase of the active program. | Yes |
 | operation_state | String | The operation state of the device. | Yes |
+| operation_state_raw | Number | The raw operation state of the device. | Yes |
 | program_start | Switch | Starts the currently selected program. | No |
 | program_stop | Switch | Stops the currently selected program. | No |
 | program_start_stop | String | Starts or stops the currently selected program. | No |
@@ -137,10 +135,12 @@ Depending on the exact appliance configuration not all channels might be support
 | program_elapsed_time | Number | The elapsed time of the active program. | Yes |
 | program_progress | Number | The progress of the active program. | Yes |
 | drying_target | String | The target drying step of the laundry. | Yes |
+| drying_target_raw | Number | The raw target drying step of the laundry. | Yes |
 | pre_heat_finished | Switch | Indicates whether the pre-heating finished. | Yes |
 | temperature_target | Number | The target temperature of the device. | Yes |
 | temperature_current | Number | The currently measured temperature of the device. | Yes |
 | ventilation_power | String | The current ventilation power of the hood. | Yes |
+| ventilation_power_raw | Number | The current raw ventilation power of the hood. | Yes |
 | error_state | Switch | Indication flag which signals an error state for the device. | Yes |
 | info_state | Switch | Indication flag which signals an information of the device. | Yes |
 | fridge_super_cool | Switch | Start the super cooling mode of the fridge. | No |
@@ -161,6 +161,7 @@ Depending on the exact appliance configuration not all channels might be support
 | light_can_be_controlled | Switch | Indicates if the light of the device can be controlled. | Yes |
 | plate_is_present | Switch | Indicates if plate is present. | Yes |
 | plate_power_step | String | The power level of the heating plate. | Yes |
+| plate_power_step_raw | Number | The raw power level of the heating plate. | Yes |
 | door_state | Switch | Indicates if the door of the device is open. | Yes |
 | door_alarm | Switch | Indicates if the door alarm of the device is active. | Yes |
 | battery_level | Number | The battery level of the robotic vacuum cleaner. | Yes |
@@ -174,8 +175,11 @@ Depending on the exact appliance configuration not all channels might be support
 | remote_control_can_be_switched_on | remote_control_can_be_switched_on |
 | remote_control_can_be_switched_off | remote_control_can_be_switched_off |
 | program_active | program_active |
+| program_active_raw | program_active_raw |
 | program_phase | program_phase |
+| program_phase_raw | program_phase_raw |
 | operation_state | operation_state |
+| operation_state_raw | operation_state_raw |
 | finish_state | finish_state |
 | power_state_on_off | power_state_on_off |
 | program_remaining_time | program_remaining_time |
@@ -192,7 +196,9 @@ Depending on the exact appliance configuration not all channels might be support
 | remote_control_can_be_switched_on | remote_control_can_be_switched_on |
 | remote_control_can_be_switched_off | remote_control_can_be_switched_off |
 | dish_warmer_program_active | dish_warmer_program_active |
+| program_active_raw | program_active_raw |
 | operation_state | operation_state |
+| operation_state_raw | operation_state_raw |
 | power_state_on_off | power_state_on_off |
 | finish_state | finish_state |
 | program_remaining_time | program_remaining_time |
@@ -213,8 +219,11 @@ Depending on the exact appliance configuration not all channels might be support
 | remote_control_can_be_switched_on | remote_control_can_be_switched_on |
 | remote_control_can_be_switched_off | remote_control_can_be_switched_off |
 | program_active | program_active |
+| program_active_raw | program_active_raw |
 | program_phase | program_phase |
+| program_phase_raw | program_phase_raw |
 | operation_state | operation_state |
+| operation_state_raw | operation_state_raw |
 | program_start_stop | program_start_stop |
 | finish_state | finish_state |
 | power_state_on_off | power_state_on_off |
@@ -235,8 +244,11 @@ Depending on the exact appliance configuration not all channels might be support
 | remote_control_can_be_switched_on | remote_control_can_be_switched_on |
 | remote_control_can_be_switched_off | remote_control_can_be_switched_off |
 | program_active | program_active |
+| program_active_raw | program_active_raw |
 | program_phase | program_phase |
+| program_phase_raw | program_phase_raw |
 | operation_state | operation_state |
+| operation_state_raw | operation_state_raw |
 | program_start_stop | program_start_stop |
 | finish_state | finish_state |
 | power_state_on_off | power_state_on_off |
@@ -245,6 +257,7 @@ Depending on the exact appliance configuration not all channels might be support
 | program_elapsed_time | program_elapsed_time |
 | program_progress | program_progress |
 | drying_target | drying_target |
+| drying_target_raw | drying_target_raw |
 | error_state | error_state |
 | info_state | info_state |
 | light_switch | light_switch |
@@ -256,6 +269,7 @@ Depending on the exact appliance configuration not all channels might be support
 | Channel ID | Channel Type ID |
 | ---------- | --------------- |
 | operation_state | operation_state |
+| operation_state_raw | operation_state_raw |
 | error_state | error_state |
 | info_state | info_state |
 | freezer_super_freeze | freezer_super_freeze |
@@ -270,6 +284,7 @@ Depending on the exact appliance configuration not all channels might be support
 | Channel ID | Channel Type ID |
 | ---------- | --------------- |
 | operation_state | operation_state |
+| operation_state_raw | operation_state_raw |
 | error_state | error_state |
 | info_state | info_state |
 | fridge_super_cool | fridge_super_cool |
@@ -284,6 +299,7 @@ Depending on the exact appliance configuration not all channels might be support
 | Channel ID | Channel Type ID |
 | ---------- | --------------- |
 | operation_state | operation_state |
+| operation_state_raw | operation_state_raw |
 | error_state | error_state |
 | info_state | info_state |
 | fridge_super_cool | fridge_super_cool |
@@ -302,20 +318,27 @@ Depending on the exact appliance configuration not all channels might be support
 | Channel ID | Channel Type ID |
 | ---------- | --------------- |
 | operation_state | operation_state |
+| operation_state_raw | operation_state_raw |
 | error_state | error_state |
 | info_state | info_state |
 | plate_1_is_present | plate_is_present |
 | plate_1_power_step | plate_power_step |
+| plate_1_power_step_raw | plate_power_step_raw |
 | plate_2_is_present | plate_is_present |
 | plate_2_power_step | plate_power_step |
+| plate_2_power_step_raw | plate_power_step_raw |
 | plate_3_is_present | plate_is_present |
 | plate_3_power_step | plate_power_step |
+| plate_3_power_step_raw | plate_power_step_raw |
 | plate_4_is_present | plate_is_present |
 | plate_4_power_step | plate_power_step |
+| plate_4_power_step_raw | plate_power_step_raw |
 | plate_5_is_present | plate_is_present |
 | plate_5_power_step | plate_power_step |
+| plate_5_power_step_raw | plate_power_step_raw |
 | plate_6_is_present | plate_is_present |
 | plate_6_power_step | plate_power_step |
+| plate_6_power_step_raw | plate_power_step_raw |
 
 ### Hood
 
@@ -326,9 +349,12 @@ Depending on the exact appliance configuration not all channels might be support
 | remote_control_can_be_switched_on | remote_control_can_be_switched_on |
 | remote_control_can_be_switched_off | remote_control_can_be_switched_off |
 | program_phase | program_phase |
+| program_phase_raw | program_phase_raw |
 | operation_state | operation_state |
+| operation_state_raw | operation_state_raw |
 | power_state_on_off | power_state_on_off |
 | ventilation_power | ventilation_power |
+| ventilation_power_raw | ventilation_power_raw |
 | error_state | error_state |
 | info_state | info_state |
 | light_switch | light_switch |
@@ -343,8 +369,11 @@ Depending on the exact appliance configuration not all channels might be support
 | remote_control_can_be_switched_on | remote_control_can_be_switched_on |
 | remote_control_can_be_switched_off | remote_control_can_be_switched_off |
 | program_active | program_active |
+| program_active_raw | program_active_raw |
 | program_phase | program_phase |
+| program_phase_raw | program_phase_raw |
 | operation_state | operation_state |
+| operation_state_raw | operation_state_raw |
 | program_start_stop | program_start_stop |
 | finish_state | finish_state |
 | power_state_on_off | power_state_on_off |
@@ -370,7 +399,9 @@ Depending on the exact appliance configuration not all channels might be support
 | remote_control_can_be_paused | remote_control_can_be_paused |
 | remote_control_can_set_program_active | remote_control_can_set_program_active |
 | vacuum_cleaner_program_active | vacuum_cleaner_program_active |
+| program_active_raw | program_active_raw |
 | operation_state | operation_state |
+| operation_state_raw | operation_state_raw |
 | finish_state | finish_state |
 | program_start_stop_pause | program_start_stop_pause |
 | power_state_on_off | power_state_on_off |
@@ -387,9 +418,13 @@ Depending on the exact appliance configuration not all channels might be support
 | remote_control_can_be_switched_on | remote_control_can_be_switched_on |
 | remote_control_can_be_switched_off | remote_control_can_be_switched_off |
 | spinning_speed | spinning_speed |
+| spinning_speed_raw | spinning_speed_raw |
 | program_active | program_active |
+| program_active_raw | program_active_raw |
 | program_phase | program_phase |
+| program_phase_raw | program_phase_raw |
 | operation_state | operation_state |
+| operation_state_raw | operation_state_raw |
 | program_start_stop | program_start_stop |
 | finish_state | finish_state |
 | power_state_on_off | power_state_on_off |
@@ -398,6 +433,7 @@ Depending on the exact appliance configuration not all channels might be support
 | program_elapsed_time | program_elapsed_time |
 | program_progress | program_progress |
 | drying_target | drying_target |
+| drying_target_raw | drying_target_raw |
 | error_state | error_state |
 | info_state | info_state |
 | temperature_target | temperature_target |
@@ -414,9 +450,13 @@ Depending on the exact appliance configuration not all channels might be support
 | remote_control_can_be_switched_on | remote_control_can_be_switched_on |
 | remote_control_can_be_switched_off | remote_control_can_be_switched_off |
 | spinning_speed | spinning_speed |
+| spinning_speed_raw | spinning_speed_raw |
 | program_active | program_active |
+| program_active_raw | program_active_raw |
 | program_phase | program_phase |
+| program_phase_raw | program_phase_raw |
 | operation_state | operation_state |
+| operation_state_raw | operation_state_raw |
 | program_start_stop | program_start_stop |
 | finish_state | finish_state |
 | power_state_on_off | power_state_on_off |
@@ -440,6 +480,7 @@ Depending on the exact appliance configuration not all channels might be support
 | remote_control_can_be_switched_on | remote_control_can_be_switched_on |
 | remote_control_can_be_switched_off | remote_control_can_be_switched_off |
 | operation_state | operation_state |
+| operation_state_raw | operation_state_raw |
 | power_state_on_off | power_state_on_off |
 | error_state | error_state |
 | info_state | info_state |
@@ -452,13 +493,36 @@ Depending on the exact appliance configuration not all channels might be support
 | bottom_temperature_target | bottom_temperature_target |
 | bottom_temperature_current | bottom_temperature_current |
 
+### Note on plate_is_present and plate_power_step channels
+
+The `plate_x_is_present` channels show whether a plate is present on an appliance.
+The plate numbers do not represent the physical layout of the plates on the appliance, but always start with the `plate_1_is_present` channel.
+This means that a hob with two plates will have `plate_1_is_present` and `plate_2_is_present` active and all other `plate_x_is_present` channels inactive.
+
+The `plate_x_power_step` channels show the current power step of the according plate.
+**Please note that different hobs may use dynamic numbering for plates.**
+Hobs that use dynamic numbering will use the first power step channel that is currently at a power step of zero when the plate is turned on.
+Additionally, when a plate is turned off all other plates with higher numbers will decrease their number by one.
+For example if plate 1, 2 and 3 are active and plate 1 is turned off then plate 2 will become plate 1, plate 3 will become plate 2 and plate 3 will have a power step of zero.
+This behavior is a fixed part of the affected appliances and cannot be changed.
+
+### Note on door_state channel
+
+The `door_state` channel might not always provide a value matching the actual state.
+For example, a washing machine will not provide a valid `door_state` when the appliance is turned off.
+A valid door state can be expected when the appliance is in one of the following raw operation states, compare the `operation_state_raw` channel:
+
+- `3`: Program selected
+- `4`: Program selected, waiting to start
+- `5`: Running
+- `6`: Paused
 
 ## Full Example
 
 ### demo.things:
 
 ```
-Bridge mielecloud:account:home [ accessToken="DE_1234567890abcdefghijklmnopqrstuv", locale="en" ] {
+Bridge mielecloud:account:home [ locale="en" ] {
     Thing coffee_system 000703261234 "Coffee machine CVA7440" [ ]
     Thing hob 000160102345 "Cooktop KM7677" [ ]
 }
