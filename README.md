@@ -1,18 +1,17 @@
 # openHAB Miele Cloud Binding Beta
-This repository serves as host for the documentation and issue tracker during the beta of the Miele Cloud Binding for [openHAB](https://www.openhab.org/).
+This repository serves as host for the documentation and issue tracker for the beta versions of the [Miele Cloud Binding](https://www.openhab.org/addons/bindings/mielecloud/) for [openHAB](https://www.openhab.org/).
 
 ## Quick Links
 - [Documentation](https://github.com/BjoernLange/openhab-miele-cloud-binding-beta/blob/master/Documentation.md)
 - [Issue Tracker](https://github.com/BjoernLange/openhab-miele-cloud-binding-beta/issues)
-- [Binding code pending openHAB PR approval](https://github.com/BjoernLange/openhab-addons/tree/9106-miele-cloud-binding-initial-contribution/bundles/org.openhab.binding.mielecloud)
-- [Integration test code pending openHAB PR approval](https://github.com/BjoernLange/openhab-addons/tree/9106-miele-cloud-binding-initial-contribution/itests/org.openhab.binding.mielecloud.tests)
 - [Tutorial: Querying the cloud status](https://github.com/BjoernLange/openhab-miele-cloud-binding-beta/blob/master/Query-Cloud-Status.md)
+- [Tutorial: Querying live updates from the cloud](https://github.com/BjoernLange/openhab-miele-cloud-binding-beta/blob/master/Query-Live-Updates.md)
 
 ## FAQ
 
 ### Is the binding closed source?
 
-No, the binding is open sourced and we are currently integrating it into the official openHAB repos. Links to the code are provided above.
+No, the binding is open sourced and officially part of openHAB since openHAB 3.1.0.
 
 ### Are you maintaining the beta versions for openHAB 2.5.x and 3.x in parallel? Are you providing further releases for openHAB 2.5.x?
 
@@ -24,3 +23,7 @@ No, maintaining the binding for openHAB 2.5.x and 3.x at the same time is too mu
 ### How can I see the raw status of my devices in the cloud?
 
 We wrote a [tutorial](https://github.com/BjoernLange/openhab-miele-cloud-binding-beta/blob/master/Query-Cloud-Status.md) on how to do this.
+
+### How can I check whether live updates from the cloud are working?
+
+We wrote a [tutorial](https://github.com/BjoernLange/openhab-miele-cloud-binding-beta/blob/master/Query-Live-Updates.md) on how to do this.
